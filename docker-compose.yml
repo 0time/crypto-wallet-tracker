@@ -1,0 +1,11 @@
+version: '3.5'
+services:
+  crypto:
+    command: 'yarn start'
+    container_name: crypto
+    image: keymux/docker-ubuntu-nvm-yarn
+    restart: unless-stopped
+    stop_grace_period: 0s
+    volumes:
+      - .:/app
+    working_dir: /app
