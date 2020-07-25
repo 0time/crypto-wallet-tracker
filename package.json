@@ -1,0 +1,28 @@
+{
+  "name": "c",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "forever --watch --minUptime 2000 --watchIgnore '*html' --watchIgnore 'historical/*' index.js",
+    "test": "mocha test/**"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "chai": "^4.2.0",
+    "cheerio": "^1.0.0-rc.2",
+    "forever": "^1.0.0",
+    "fs-extra": "^7.0.1",
+    "hapi": "^18.1.0",
+    "http-server": "^0.11.1",
+    "inert": "^5.1.2",
+    "joi": "^14.3.1",
+    "minimist": "^1.2.0",
+    "mocha": "^8.0.1",
+    "moment": "^2.24.0",
+    "nodemon": "^1.18.10",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
+}

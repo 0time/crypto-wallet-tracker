@@ -1,0 +1,53 @@
+.data div {
+  display: inline;
+  font-family: Courier New,Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono, monospace;
+}
+
+.data .symbol {
+  font-weight: bold;
+}
+
+.data .percent-change {
+  font-weight: bold;
+}
+
+.negative-number {
+  color: red;
+}
+
+.positive-number {
+  color: green;
+}
+
+.totals {
+  display: inline;
+  font-weight: bold;
+}
+
+td {
+  width: 140;
+  text-align: center;
+}
+
+.item {
+    position: relative;
+    float: right;
+}
+
+.item h2 {
+    text-align:center;
+    position: absolute;
+    line-height: 125px;
+    width: 100%;
+}
+
+svg {
+   -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+.circle_animation {
+  stroke-dasharray: 440; /* this value is the pixel circumference of the circle */
+  stroke-dashoffset: 440;
+}
+
