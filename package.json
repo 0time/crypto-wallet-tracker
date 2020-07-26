@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "forever --watch --minUptime 2000 --watchIgnore '*html' --watchIgnore 'historical/*' index.js",
+    "start": "forever --killSignal=SIGINT --watch --minUptime 2000 --watchIgnore '*html' --watchIgnore 'historical/*' index.js",
     "test": "mocha test/**"
   },
   "author": "",

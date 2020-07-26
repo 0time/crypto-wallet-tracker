@@ -3,7 +3,7 @@ services:
   crypto:
     command: 'yarn start'
     container_name: crypto
-    image: keymux/docker-ubuntu-nvm-yarn
+    image: keymux/docker-ubuntu-nvm-yarn:latest
     restart: unless-stopped
     stop_grace_period: 0s
     volumes:

@@ -1,20 +1,51 @@
-const config = require('./config');
-const fse = require('fs-extra');
+const fs = require('fs');
+const fsp = require('fs/promises');
 const {get} = require('lodash');
 const hapi = require('hapi');
 const Joi = require('joi');
 const os = require('os');
 const path = require('path');
-const Promise = require('bluebird');
-const rp = require('request-promise');
 const util = require('util');
 
-const parse = require('./parse');
+const config = require('./config');
+const routes = require('./routes');
+const update = require('./lib/update');
 
 const dt = () => new Date().toISOString();
 
+const tmpdir = path.resolve(os.tmpdir(), dt());
+const file = path.resolve(tmpdir, 'cmc.html');
+
+// This has to be a directory
+const rmrf = dir => {
+  const files = path.readdirSync(dir);
+
+  files.forEach(file => {
+    if (fs.statSync(file).isDirectory()) {
+      rmrf(file);
+    } else {
+      fs.unlinkSync(file);
+    }
+  });
+
+  fs.rmdirSync(file);
+};
+
+process.on('SIGINT', () => {
+  console.error('SIGINT received');
+
+  if (fs.existsSync(tmpdir)) {
+    console.error('deleting dir ' + tmpdir);
+
+    fs.readdirSync(tmpdir);
+  }
+
+  process.exit(0);
+});
+
 const context = {
   config,
+  file,
   logger: ['log', 'info', 'error', 'warn', 'debug', 'trace'].reduce(
     (acc, key) =>
       Object.assign({}, acc, {
@@ -22,6 +53,7 @@ const context = {
       }),
     {},
   ),
+  tmpdir,
 };
 
 const server = hapi.server({
@@ -59,54 +91,14 @@ const init = async () => {
     },
   });
 
+  server.route(routes.refresh(context));
+
   await server.start();
 
   context.logger.info(`Server running at: ${server.info.uri}`);
 };
 
-const nextInt = (max, min) => Math.random() * (max - min) + min;
-
-const file = path.resolve(os.tmpdir(), 'cmc.html');
-
-const update = () =>
-  Promise.resolve({
-    resolveWithFullResponse: true,
-    timeout: 60000,
-    uri: 'https://coinmarketcap.com',
-  })
-    .tap(({uri}) => context.logger.info(`querying ${uri}`))
-    .then(rp)
-    .tap(response =>
-      context.logger.info(`received ${get(response, 'statusCode')}`),
-    )
-    .then(response => {
-      if (response.statusCode !== 200) {
-        throw new Error(`Unexpected statusCode ${response.statusCode}`);
-      }
-
-      return response;
-    })
-    .tap(({body}) => fse.writeFile(`${file}.${new Date().toISOString()}`, body))
-    .then(({body}) => fse.writeFile(file, body))
-    .then(() => nextInt(300000, 30000))
-    .then(next => {
-      context.logger.info(`Updating again in ${next} milliseconds`);
-
-      return {
-        createdAt: new Date(),
-        file,
-        next,
-        nextTime: new Date(Date.now() + next + 5000),
-      };
-    })
-    .tap(parse(context))
-    .then(({next}) => setTimeout(update, next))
-    .catch(err => {
-      context.logger.error(87, err);
-
-      setTimeout(update, 2000);
-    });
-
-init();
-
-update();
+fsp
+  .mkdir(tmpdir)
+  .then(() => init())
+  .then(() => update(context)());
