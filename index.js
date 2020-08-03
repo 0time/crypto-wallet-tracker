@@ -70,7 +70,7 @@ const init = async () => {
     path: '/{file*}',
     handler: {
       directory: {
-        path: './',
+        path: './static/',
       },
     },
     options: {
