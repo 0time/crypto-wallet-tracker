@@ -1,3 +1,7 @@
 *.html
-/node_modules/
+/.nyc_output
+/coverage
 /docker-compose.override.yml
+/historical
+/node_modules/
+*.ignore

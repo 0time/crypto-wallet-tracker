@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+/* eslint-disable */
 
 const fse = require('fs-extra');
-const {isEmpty} = require('lodash');
+const { isEmpty } = require('lodash');
 const minimist = require('minimist');
 const path = require('path');
 const Promise = require('bluebird');
@@ -13,7 +14,7 @@ const join = (...args) => x => path.join(...args, x);
 
 const context = {
   logger: ['log', 'info', 'error', 'warn', 'debug', 'trace'].reduce(
-    (acc, key) => Object.assign({}, acc, {[key]: console.error}),
+    (acc, key) => Object.assign({}, acc, { [key]: console.error }),
     {},
   ),
 };

@@ -3,18 +3,27 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "forever --killSignal=SIGINT --watch --minUptime 2000 --watchIgnore '*html' --watchIgnore 'historical/*' index.js",
-    "test": "mocha test/**"
+    "lint": "eslint .",
+    "start": "forever --killSignal=SIGINT --watch --minUptime 2000 --watchIgnore '*html' --watchIgnore 'historical/*' src/index.js",
+    "test": "yarn lint && yarn test:unit && yarn test:coveralls && yarn test:integration",
+    "test:coveralls": "if-env-run CI yarn run-coveralls",
+    "test:integration": "[ -d test/integration ] && export NODE_ENV=integration && nyc mocha && nyc check-coverage",
+    "test:unit": "NODE_ENV=unit nyc mocha"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@0ti.me/index-generator": "^0.1.9",
+    "@0ti.me/test-deps": "^0.1.21",
+    "@0ti.me/tiny-pfp": "^0.1.13",
+    "axios": "^0.20.0",
     "bluebird": "^3.5.3",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.2",
+    "config": "^3.3.2",
+    "express": "^4.17.1",
     "forever": "^1.0.0",
     "fs-extra": "^7.0.1",
-    "hapi": "^18.1.0",
     "http-server": "^0.11.1",
     "inert": "^5.1.2",
     "joi": "^14.3.1",
@@ -22,6 +31,8 @@
     "mocha": "^8.0.1",
     "moment": "^2.24.0",
     "nodemon": "^1.18.10",
+    "pg": "^8.3.3",
+    "pg-format": "^1.0.4",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
   }

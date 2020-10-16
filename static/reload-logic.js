@@ -1,7 +1,8 @@
+/* eslint-env browser, jquery */
+/* eslint-disable no-console */
+
 const fixed = val => val.toFixed(1);
 const initialOffset = '440';
-
-const pageLoadTime = new Date();
 
 const val = id => document.getElementById(id).innerText;
 
@@ -9,7 +10,6 @@ const createdAt = new Date(val('created-at'));
 const nextTime = new Date(val('next-time'));
 const time = nextTime - createdAt;
 
-let reloadTimeout = null;
 let lastReloadTry = new Date();
 lastReloadTry = nextTime - 3000;
 
@@ -26,8 +26,6 @@ const fn = () => {
 
   const result = nextText ? nextText + ' ' + ageText : ageText;
 
-  const strokeDashOffset = 440 - age / time;
-
   document.getElementById('timer').innerText = result;
   //document.getElementById('h2-timer').innerText = nextText;
 
@@ -38,7 +36,7 @@ const fn = () => {
 
   if (now > nextTime && now - lastReloadTry > 0) {
     console.error(
-      {lastReloadTry, nextTime, newReloadTry: now + 7000, now},
+      { lastReloadTry, nextTime, newReloadTry: now + 7000, now },
       now > nextTime,
       now - lastReloadTry > 0,
     );
@@ -53,6 +51,7 @@ const fn = () => {
 
 fn();
 
+// eslint-disable-next-line no-unused-vars
 function formSubmit() {
   console.info('form submit detected');
 

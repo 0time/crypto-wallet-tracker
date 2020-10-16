@@ -1,7 +1,5 @@
-const {expect} = require('chai');
+const { expect } = require('chai');
 const basis = require('../../lib/basis');
-
-let i = 0;
 
 const buy = (quantity, basisUsd) => ({
   basisUsd,
@@ -41,7 +39,7 @@ it('should work with deep keys', () => {
     sortField: 'test.date',
   };
 
-  const example = [buy(100, 100), sell(50, 100)].map(test => ({test}));
+  const example = [buy(100, 100), sell(50, 100)].map(test => ({ test }));
 
   expect(basis(example, config)).to.equal(50);
 });

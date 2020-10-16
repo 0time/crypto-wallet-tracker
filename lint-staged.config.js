@@ -1,0 +1,1 @@
+node_modules/@0ti.me/test-deps/configuration-templates/lint-staged.config.js
