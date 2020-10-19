@@ -49,6 +49,10 @@ module.exports = (context) => {
         sql.push(')');
       });
 
+      if (options.ignore) {
+        sql.push('ON CONFLICT DO NOTHING');
+      }
+
       return query(sql, values, formatterValues);
     },
   };

@@ -7,11 +7,13 @@ const identity = require('../fp/identity');
 const {
   JSON_SELECTORS: { CONFIG_PROXY_ENABLED },
 } = require('../constants');
+const localization = require('../routes/localization');
 const price = require('../routes/price');
 const proxy = require('../routes/proxy');
 
 module.exports = (context) =>
   flow([
+    localization,
     fpIf(get(context, CONFIG_PROXY_ENABLED, false), proxy, identity),
     price,
   ])(context);

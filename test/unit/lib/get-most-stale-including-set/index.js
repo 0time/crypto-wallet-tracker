@@ -102,6 +102,32 @@ d(me, () => {
           getMostStaleIncludingSet(),
         ).to.eventually.be.fulfilled.and.deep.equal([symbol1]));
     });
+
+    describe('and a set of two', () => {
+      beforeEach(() => {
+        symbols = [symbol2, symbol1];
+      });
+
+      describe('and both symbols later in the rows', () => {
+        beforeEach(() => {
+          rows = [
+            { symbol: uuid() },
+            { symbol: uuid() },
+            { symbol: symbol1 },
+            { symbol: symbol2 },
+          ];
+
+          query = stub().usingPromise(bluebird).resolves({ rows });
+
+          set(context, RUNTIME_QUERY, query);
+        });
+
+        it('should return those two', () =>
+          expect(
+            getMostStaleIncludingSet(),
+          ).to.eventually.be.fulfilled.and.deep.equal([symbol2, symbol1]));
+      });
+    });
   });
 
   describe('given a limit that is not a number', () => {

@@ -4,7 +4,7 @@ const { NODE_ENV } = process.env;
 let nycOverrides = {};
 
 if (NODE_ENV === 'unit') {
-  nycOverrides = nycConfig.setAllCategoriesTo(1);
+  nycOverrides = nycConfig.setAllCategoriesTo(0);
 } else if (NODE_ENV === 'integration') {
   nycOverrides = nycConfig.setAllCategoriesTo(0);
 }

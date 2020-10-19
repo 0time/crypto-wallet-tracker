@@ -91,7 +91,7 @@ VALUES
   (86, 'XZC', 'Zcoin', 'zcoin'),
   (87, 'SNX', 'Synthetix Network Token', 'synthetix-network-token'),
   (88, 'SOLVE', 'SOLVE', 'solve'),
-  (89, 'WAX', 'WAX', 'wax'),
+  (89, 'WAXP', 'WAX', 'wax'),
   (90, 'BEAM', 'Beam', 'beam'),
   (91, 'WAN', 'Wanchain', 'wanchain'),
   (92, 'STRAT', 'Stratis', 'stratis'),

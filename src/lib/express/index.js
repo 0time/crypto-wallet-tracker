@@ -8,9 +8,11 @@ const {
   JSON_SELECTORS: { RUNTIME_APP, RUNTIME_SERVER },
 } = require('../constants');
 const listen = require('./listen');
+const logExpressServerUp = require('./log-express-server-up');
 const middlewares = require('./middlewares');
 const routes = require('./routes');
 const send = require('../middlewares/send');
+const mwStatic = require('../middlewares/static');
 
 module.exports = (context) =>
   flow([
@@ -19,8 +21,10 @@ module.exports = (context) =>
     () => set(context, RUNTIME_APP, app),
     middlewares,
     routes,
+    mwStatic,
     send,
     error,
     listen,
     (server) => set(context, RUNTIME_SERVER, server),
+    logExpressServerUp,
   ])(app);

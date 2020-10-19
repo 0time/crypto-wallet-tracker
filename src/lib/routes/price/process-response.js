@@ -64,5 +64,6 @@ module.exports = (context) => (response) => {
       (acc, symbol) => acc.concat(getMappedData(data[symbol])),
       [],
     ),
+    { ignore: true },
   );
 };

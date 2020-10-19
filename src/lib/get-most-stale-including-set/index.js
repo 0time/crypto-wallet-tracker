@@ -11,6 +11,7 @@ const fpFilter = (cb) => (array) => array.filter(cb);
 
 module.exports = (context) => {
   const query = get(context, RUNTIME_QUERY);
+
   return (symbols) => {
     const limit = get(context, CONFIG_SOURCE_LIMIT);
     const promise = get(context, RUNTIME_PROMISE);

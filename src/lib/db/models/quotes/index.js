@@ -4,7 +4,7 @@
  * This model is intended to abstract away the concept of the coins and values tables to just provide
  * something similar to the cmc quotes endpoints.
  */
-const { fp, get } = require('@0ti.me/tiny-pfp');
+const { fp, get, pick } = require('@0ti.me/tiny-pfp');
 const getBase = require('./get-base');
 const {
   JSON_SELECTORS: { RUNTIME_DB_MODELS, RUNTIME_QUERY, RUNTIME_PROMISE },
@@ -103,7 +103,9 @@ module.exports = (context) => {
           .then((rows) =>
             list.map((ea, i) => Object.assign({}, ea, { idCoin: rows[i].id })),
           )
-          .then(coinValues.putMany)
+          .then((result) =>
+            coinValues.putMany(result, pick(options, ['ignore'])),
+          )
       );
     },
   };

@@ -1,0 +1,264 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <title>CRYPTO!</title>
+  </head>
+  <body themable>
+    <div id="container">
+      <div class="controls">
+        <button id="update" class="controls" data-localization="BUTTON_UPDATE">Update</button>
+        <button id="wallet-toggle" class="controls" data-localization="BUTTON_WALLET_TOGGLE">Settings</button>
+        <button id="theme-toggle" class="controls" data-localization="BUTTON_THEME_TOGGLE">Theme</button>
+      </div>
+      <div class="wallet wallet-hideable">
+        <div>
+          <label for="wallet-id" data-localization="LABEL_WALLET_ID">Wallet ID:</label>
+          <input id="wallet-id" name="wallet-id" class="wallet" type="text"></input>
+          <button id="load-wallet" name="load-wallet" data-localization="LOAD_WALLET">Load Wallet</button>
+        </div>
+        <div>
+          <label for="wallet-json" data-localization="LABEL_WALLET_TEXTAREA">Wallet JSON Textarea</label>
+          <textarea id="wallet-json" name="wallet-json" class="wallet"></textarea>
+          <button id="save-wallet" name="save-wallet" data-localization="SAVE_WALLET">Save Wallet</button>
+        </div>
+        <div>
+          <label for="preferred-language" data-localization="PREFERRED_LANGUAGE">Preferred Language:</label>
+          <input id="preferred-language" name="preferred-language"></input>
+          <button id="update-localizations" name="update-localizations" data-localization="UPDATE_LOCALIZATIONS">Update Localizations</button>
+        </div>
+        <div>
+          <label for="update-frequency" data-localization="LABEL_UPDATE_FREQUENCY">Update Frequency</label>
+          <input id="update-frequency" name="update-frequency"></input>
+        </div>
+        <div class="info-header">
+          <div>
+            <label for="totals-oldest-timestamp" data-localization="LABEL_TIMESTAMP">Timestamp:</label>
+            <span
+              id="totals-oldest-timestamp"
+              name="totals-oldest-timestamp"
+              data-field="totals-oldest-timestamp"
+              data-op="date"
+            ></span>
+          </div>
+          <div>
+            <label for="debug-state" data-localization="LABEL_DEBUG_STATE">Debug State:</label>
+            <span
+              id="debug-state"
+              name="debug-state"
+            >Unknown</span>
+          </div>
+        </div>
+      </div>
+      <table id="totals" class="totals">
+        <thead>
+          <tr>
+            <th class="totals totals-label" data-localization="TH_TOTALS_FIELD_NAME">Totals Field Name</th>
+            <th class="totals" data-localization="TH_TOTALS_FIELD_USD">Totals USD Value</th>
+            <th class="totals" data-localization="TH_TOTALS_FIELD_BASIS">Totals Basis</th>
+            <th class="totals" data-localization="TH_TOTALS_FIELD_PERCENT">Totals Percent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="totals totals-label">
+              <label
+                class="totals totals-label"
+                for="totals-usd"
+                class="totals"
+                data-localization="LABEL_TOTALS_USD"
+              >Total USD:</label>
+            </td>
+            <td class="totals">
+              <div
+                id="totals-usd"
+                class="totals"
+                data-field="totals-usd"
+                data-op="metrify,sig4,usd"
+              ></div>
+            </td>
+            <td class="totals">
+              <div
+                id="totals-basis-usd"
+                class="totals"
+                data-field="totals-basis-usd"
+                data-op="metrify,sig4,usd"
+              ></div>
+            </td>
+            <td class="totals">
+              <!-- empty, there is no valid percent for total usd value -->
+            </td>
+          </tr>
+          <tr>
+            <td class="totals totals-label">
+              <label
+                class="totals totals-label"
+                for="totals-btc"
+                class="totals"
+                data-localization="LABEL_TOTALS_BTC"
+              >Total BTC:</label>
+            </td>
+            <td class="totals">
+              <div
+                id="totals-btc"
+                class="totals"
+                data-field="totals-btc"
+                data-op="metrify,sig4,btc"
+              ></div>
+            </td>
+            <td class="totals">
+              <div
+                id="totals-basis-btc"
+                class="totals"
+                data-field="totals-basis-btc"
+                data-op="metrify,sig4,btc"
+              ></div>
+            </td>
+            <td class="totals">
+              <!-- empty, there is no valid percent for total btc value -->
+            </td>
+          </tr>
+          <tr>
+            <td class="totals totals-label">
+              <label
+                class="totals totals-label"
+                for="totals-profit-over-basis"
+                class="totals"
+                data-localization="LABEL_TOTALS_PROFIT_OVER_BASIS"
+              >Profit:</label>
+            </td>
+            <td class="totals">
+              <div
+                id="totals-profit-over-basis"
+                class="totals profit-over-basis"
+                data-field="totals-profit-over-basis"
+                data-op="metrify,sig4,usd,accountify"
+              ></div>
+            </td>
+            <td class="totals">
+              <!-- empty, there is no valid percent for total btc value -->
+            </td>
+            <td class="totals">
+              <div
+                id="totals-profit-over-basis-percent"
+                class="totals profit-over-basis"
+                data-field="totals-profit-over-basis-percent"
+                data-op="metrify,sig4,percent,accountify"
+              ></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="totals totals-label">
+              <label
+                class="totals totals-label"
+                for="totals-daily-profit"
+                class="totals"
+                data-localization="LABEL_TOTALS_DAILY_PROFIT"
+              >Daily Profit:</label>
+            </td>
+            <td class="totals">
+              <div
+                id="totals-daily-profit"
+                class="totals"
+                data-field="totals-daily-profit"
+                data-op="metrify,sig4,usd,accountify"
+              ></div>
+            </td>
+            <td class="totals">
+              <div
+                id="totals-daily-profit-basis"
+                class="totals"
+                data-field="totals-daily-profit-basis"
+                data-op="metrify,sig4,usd,accountify"
+              ></div>
+              </td>
+            <td class="totals">
+              <div
+                id="totals-daily-profit-percent"
+                class="totals"
+                data-field="totals-daily-profit-percent"
+                data-op="metrify,sig4,percent,accountify"
+              ></div>
+            </td>
+          </tr>
+          <tr>
+            <td class="totals totals-label">
+              <label
+                class="totals totals-label"
+                for="totals-ath-equivalent"
+                class="totals"
+                data-localization="LABEL_TOTALS_ATH_EQUIVALENT"
+              >ATH Equivalent:</label>
+            </td>
+            <td class="totals">
+              <div
+                id="totals-ath-equivalent"
+                class="totals ath-equivalent"
+                data-field="totals-ath-equivalent"
+                data-op="metrify,sig4,usd"
+              ></div>
+            </td>
+            <td class="totals">
+            </td>
+            <td class="totals">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="details">
+        <table class="crypto-details">
+          <thead>
+            <tr>
+              <th class="crypto-details-header" data-localization="SYMBOL">Symbol</th>
+              <th class="crypto-details-header" data-localization="HELD">Held</th>
+              <th class="crypto-details-header" data-localization="BASIS">Basis</th>
+              <th class="crypto-details-header" data-localization="HELD_USD">USD Value</th>
+              <th class="crypto-details-header" data-localization="BTC_VALUE">BTC Value</th>
+              <th class="crypto-details-header" data-localization="PROFIT_LOSS_PERCENT">Profit/Loss (%)</th>
+              <th class="crypto-details-header" data-localization="PROFIT_LOSS_USD">Profit/Loss ($)</th>
+              <th class="crypto-details-header" data-localization="CHANGE_PERCENT">Change (%)</th>
+              <th class="crypto-details-header" data-localization="CHANGE_USD">Change ($)</th>
+              <th class="crypto-details-header" data-localization="USD_VALUE_EACH">USD (ea.)</th>
+              <th class="crypto-details-header" data-localization="BTC_VALUE_EACH">BTC (ea.)</th>
+              <th class="crypto-details-header" data-localization="OWN_INDEX">Own Index</th>
+              <th class="crypto-details-header" data-localization="ATH_INDEX">ATH Index</th>
+              <th class="crypto-details-header" data-localization="ATH_ADJUSTED_USD">ATH USD Value</th>
+              <th class="crypto-details-header" data-localization="HELD_CAP_LONG">Long-Term Inventory</th>
+              <th class="crypto-details-header" data-localization="HELD_CAP_SHORT">Short-Term Inventory</th>
+            </tr>
+          </thead>
+          <tbody id="crypto-details-tbody" name="crypto-details-tbody">
+            <tr class="hidden crypto-details-example crypto-details-row">
+              <td class="crypto-details-field" data-field="symbol"></td>
+              <td class="crypto-details-field" data-field="held"                data-op="metrify,sig4"></td>
+              <td class="crypto-details-field" data-field="basis"               data-op="metrify,sig4,usd"></td>
+              <td class="crypto-details-field" data-field="held-usd"            data-op="metrify,sig4,usd"></td>
+              <td class="crypto-details-field" data-field="btc-value"           data-op="metrify,sig4,btc"></td>
+              <td class="crypto-details-field" data-field="profit-loss-percent" data-op="metrify,sig4,percent,accountify"></td>
+              <td class="crypto-details-field" data-field="profit-loss-usd"     data-op="metrify,sig4,usd,accountify"></td>
+              <td class="crypto-details-field" data-field="change-percent"      data-op="metrify,sig4,percent,accountify"></td>
+              <td class="crypto-details-field" data-field="change-usd"          data-op="metrify,sig4,usd,accountify"></td>
+              <td class="crypto-details-field" data-field="price"               data-op="metrify,sig4,usd"></td>
+              <td class="crypto-details-field" data-field="btc-value-each"      data-op="metrify,sig4,btc"></td>
+              <td class="crypto-details-field" data-field="own-index"           data-op="metrify,sig4"></td>
+              <td class="crypto-details-field" data-field="ath-index"           data-op="metrify,sig4"></td>
+              <td class="crypto-details-field" data-field="ath-adjusted-usd"    data-op="metrify,sig4,usd"></td>
+              <td class="crypto-details-field" data-field="held-cap-long"       data-op="metrify,sig4"></td>
+              <td class="crypto-details-field" data-field="held-cap-short"      data-op="metrify,sig4"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="alert-container" class="alert-container">
+    </div>
+    <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="lib.js"></script>
+    <script type="text/javascript" src="settings.js"></script>
+    <script type="text/javascript" src="crypto.js"></script>
+    <script type="text/javascript" src="localization.js"></script>
+    <script type="text/javascript" src="theme.js"></script>
+    <script type="text/javascript" src="wallet.js"></script>
+  </body>
+</html>

@@ -1,14 +1,15 @@
 const { get } = require('@0ti.me/tiny-pfp');
 const {
-  JSON_SELECTORS: { RUNTIME_APP },
+  JSON_SELECTORS: { RUNTIME_APP, RUNTIME_LOGGER },
 } = require('../constants');
 
 module.exports = (context) => {
   const app = get(context, RUNTIME_APP);
+  const logger = get(context, RUNTIME_LOGGER);
 
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {
-    context.logger.error(
+    logger.error(
       JSON.stringify({
         err: err.message,
         headersSent: res.headersSent,

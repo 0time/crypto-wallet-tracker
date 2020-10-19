@@ -1,9 +1,9 @@
-const {cloneDeep, get, set} = require('lodash');
+const { cloneDeep, get, set } = require('lodash');
 const sortOnField = require('./sort-on-field');
 
 const DEFAULTS = require('./defaults');
 
-const reduceSoldQuantity = quantityField => (acc, ea) => {
+const reduceSoldQuantity = (quantityField) => (acc, ea) => {
   if (get(ea, quantityField) < 0) {
     return acc - get(ea, quantityField);
   }
@@ -11,7 +11,7 @@ const reduceSoldQuantity = quantityField => (acc, ea) => {
   return acc;
 };
 
-const balanceReducer = ({basisField, quantityField, soldQuantityCount}) => (
+const balanceReducer = ({ basisField, quantityField, soldQuantityCount }) => (
   acc,
   ea,
 ) => {
@@ -61,7 +61,7 @@ module.exports = (array, userConfig) => {
   );
 
   return array.reduce(
-    balanceReducer(Object.assign({soldQuantityCount}, config)),
+    balanceReducer(Object.assign({ soldQuantityCount }, config)),
     [],
   );
 };

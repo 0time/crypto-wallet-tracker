@@ -1,24 +1,26 @@
 /**
- * A configurable wrapper for the pool query to abstract logging and whatnot.
+ * A configurable wrapper for the pool query to abstract logging and validation.
  */
 
 const {
   fp: { flow },
   get,
+  pick,
 } = require('@0ti.me/tiny-pfp');
 const {
-  JSON_SELECTORS: { RUNTIME_POOL, RUNTIME_PROMISE },
+  JSON_SELECTORS: { RUNTIME_LOGGER, RUNTIME_POOL, RUNTIME_PROMISE },
 } = require('../../constants');
 const pgFormat = require('pg-format');
 
 module.exports = (context) => {
+  const logger = get(context, RUNTIME_LOGGER);
   const pool = get(context, RUNTIME_POOL);
   const promise = get(context, RUNTIME_PROMISE);
 
   const dupWhitespaceRegex = new RegExp(/[ \n\r]+/g);
 
   const trace = (inp) => {
-    context.logger.trace(
+    logger.trace(
       __filename,
       JSON.stringify(
         Object.assign({}, inp, {
@@ -26,6 +28,16 @@ module.exports = (context) => {
         }),
       ),
     );
+
+    return inp;
+  };
+
+  const getTrace = (keys) => (inp) => {
+    const val = keys && Array.isArray(keys) ? pick(inp, keys) : inp;
+
+    if (val !== undefined) {
+      logger.trace(val);
+    }
 
     return inp;
   };
@@ -66,7 +78,7 @@ module.exports = (context) => {
     const expectedDollarValue = inp.values.length;
 
     const debug = (extra) =>
-      context.logger.debug(
+      logger.debug(
         JSON.stringify({
           countIs,
           expectedIs,
@@ -110,5 +122,6 @@ module.exports = (context) => {
       formatPg,
       trace,
       ({ sql, values }) => pool.query(sql, values),
+      getTrace(['command', 'rowCount']),
     ])(promise.resolve({ formatterValues, sql, values }));
 };
