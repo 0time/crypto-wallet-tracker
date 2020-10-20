@@ -27,11 +27,15 @@ const loadWallet = () => {
 
   if (!walletId) return lib.presentAlert(`Invalid wallet id '${walletId}'`);
 
-  const walletJson = settings.get(walletId);
+  const namespacedWalletId = `wallet-${walletId}`;
+
+  const walletJson = settings.get(namespacedWalletId);
 
   $('#wallet-json').val(walletJson);
 
   activeWallet = JSON.parse(walletJson);
+
+  console.debug('loaded', namespacedWalletId, 'with contents', activeWallet);
 };
 
 const saveWallet = () => {
@@ -50,11 +54,22 @@ const saveWallet = () => {
 
     context.walletContents = JSON.parse(context.walletString);
 
+    context.walletId = `wallet-${context.walletId}`;
+
     settings.set(context.walletId, context.walletString);
 
     settings.arrayAppend('wallet-list', context.walletId);
 
     activeWallet = context.walletContents;
+
+    console.debug(
+      'saved',
+      context.walletId,
+      'with contents',
+      context.walletContents,
+    );
+
+    crypto.createCryptoTables(crypto.getCryptoData());
   } catch (err) {
     console.error(context, err);
 

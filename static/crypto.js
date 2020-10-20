@@ -348,6 +348,7 @@ $(document).ready(() => {
 
 // eslint-disable-next-line no-unused-vars
 const crypto = {
+  createCryptoTables,
   getCryptoData,
   setCryptoData,
   setCryptoAPIBase,
