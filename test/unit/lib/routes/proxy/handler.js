@@ -45,7 +45,8 @@ d(me, () => {
   });
 
   it('should proxy the request i want right now', () =>
-    handler().then((result) =>
+    handler().then((result) => [
+      expect(result, stringify(result)).to.be.an('object'),
       expect(result, stringify(result)).to.have.nested.property('BTC'),
-    ));
+    ]));
 });

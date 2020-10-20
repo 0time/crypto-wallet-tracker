@@ -6,7 +6,7 @@
 
 const { get, has, set } = require('@0ti.me/tiny-pfp');
 const {
-  JSON_SELECTORS: { RUNTIME_PROMISE },
+  JSON_SELECTORS: { CONFIG_SOURCE_URL, RUNTIME_PROMISE },
 } = require('../../../src/lib/constants');
 const listFilesSync = require('@0ti.me/index-generator/src/lib/list-files-sync');
 
@@ -32,6 +32,8 @@ const simpleParseQuery = (url) =>
 
 module.exports = (context) => {
   const promise = get(context, RUNTIME_PROMISE);
+  const configUrl = get(context, CONFIG_SOURCE_URL);
+
   return (options) =>
     Promise.resolve()
       .then(() => {
@@ -39,7 +41,7 @@ module.exports = (context) => {
         const url = get(options, 'url');
         const query = simpleParseQuery(url);
         const baseUrl = getBaseUrl(url);
-        const expectedDomainPart = 'https://sandbox-api.coinmarketcap.com';
+        const expectedDomainPart = configUrl;
         const key = baseUrl.replace(expectedDomainPart, '');
 
         if (method !== 'get') {

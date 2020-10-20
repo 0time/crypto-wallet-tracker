@@ -1,3 +1,21 @@
+## Example config/local.js
+
+    module.exports = {
+      source: {
+        key: '<your coinmarketcap API key>',
+        url: 'https://pro-api.coinmarketcap.com',
+      },
+    };
+
+## Example config/local.json
+
+    {
+      "source": {
+        "key": "<your coinmarketcap API key>",
+        "url": "https://pro-api.coinmarketcap.com"
+      }
+    }
+
 ## Example wallet
 
 This wallet has one purchase in 2011, one purchase in 3051, and one sale at the end of 3051. This is intended to show off and simulate capital gains features.
