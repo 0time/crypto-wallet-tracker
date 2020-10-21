@@ -18,7 +18,7 @@
   "dependencies": {
     "@0ti.me/index-generator": "^0.1.9",
     "@0ti.me/test-deps": "^0.1.21",
-    "@0ti.me/tiny-pfp": "^0.1.13",
+    "@0ti.me/tiny-pfp": "0.1.14",
     "axios": "^0.20.0",
     "bluebird": "^3.5.3",
     "cheerio": "^1.0.0-rc.2",
@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^8.0.1"
+    "mocha": "^8.0.1",
+    "nock": "^13.0.4"
   }
 }

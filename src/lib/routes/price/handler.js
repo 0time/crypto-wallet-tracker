@@ -1,3 +1,4 @@
+const canMakeRequestCreator = require('./can-make-request');
 const { fp, get, set } = require('@0ti.me/tiny-pfp');
 const fpIf = require('../../fp/if');
 const fromDbReadSymbolData = require('./from-db-read-symbol-data');
@@ -6,36 +7,17 @@ const getOptions = require('./get-options');
 const identity = require('../../fp/identity');
 const {
   HTTP_STATUS: { OK },
-  JSON_SELECTORS: {
-    CONFIG_SOURCE_MIN_DEBOUNCE_TIME_MS,
-    REQUEST_CONTEXT,
-    RUNTIME_LAST_API_CALL,
-  },
+  JSON_SELECTORS: { REQUEST_CONTEXT },
 } = require('../../constants');
 const makeRequest = require('./make-request');
 const processResponse = require('./process-response');
 
 module.exports = (context) => {
+  const canMakeRequest = canMakeRequestCreator(context);
   const configuredFromDbReadSymbolData = fromDbReadSymbolData(context);
   const configuredGetOptions = getOptions(context);
   const configuredMakeRequest = makeRequest(context);
   const configuredProcessResponse = processResponse(context);
-
-  const canMakeRequest = () => {
-    const debounceTime = get(context, CONFIG_SOURCE_MIN_DEBOUNCE_TIME_MS);
-    const lastApiCall = get(context, RUNTIME_LAST_API_CALL, 0);
-    const now = new Date().valueOf();
-
-    if (!debounceTime) throw new Error('Unspecified debounce time');
-
-    if (lastApiCall + debounceTime < now) {
-      set(context, RUNTIME_LAST_API_CALL, now);
-
-      return true;
-    }
-
-    return false;
-  };
 
   const updateSymbols = fp.flow([
     configuredGetOptions,

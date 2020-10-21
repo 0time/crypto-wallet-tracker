@@ -218,6 +218,8 @@ const createCryptoTables = (data) => {
       (totals['totals-daily-profit'] / totals['totals-daily-profit-basis']);
   }
 
+  console.debug(221, totals);
+
   fillDataFields('.totals', totals);
   fillDataFields('.info-header', totals);
 };
