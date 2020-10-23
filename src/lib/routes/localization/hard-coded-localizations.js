@@ -1,5 +1,7 @@
 const values = {
   'en-SM': {
+    ACTIVITY_LIGHT: '\u2180',
+    AGE_LIGHT: '\u231A',
     ATH_INDEX: '\u2625',
     ATH_ADJUSTED_USD: '$\u2625',
     BASIS: '\u22B6',

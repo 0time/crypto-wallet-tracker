@@ -7,6 +7,7 @@ module.exports = {
   HTTP_METHODS: { GET: 'get' },
   HTTP_STATUS: { OK: 200 },
   JSON_SELECTORS: {
+    // TODO: These selectors are not particularly predictable based on their name
     CONFIG_LOG_FUNCTIONS: 'config.logger.levels',
     CONFIG_LOG_LINE_NUMBERS_ENABLED: 'config.logger.logLineNumbers',
     CONFIG_PROXY_ENABLED: 'config.proxy',
@@ -25,6 +26,7 @@ module.exports = {
     REQUEST_HEADERS_ACCEPT_LANGUAGE: 'headers.accept-language',
     REQUEST_HEADERS_X_ACCEPT_LANGUAGE: 'headers.x-accept-language',
     REQUEST_PARAMS_LANGUAGE: 'params.language',
+    REQUEST_QUERY_FORCE: 'query.force',
     REQUEST_QUERY_LANGUAGE: 'query.language',
     RUNTIME_APP: 'runtime.app',
     RUNTIME_AXIOS: 'runtime.axios',

@@ -1,5 +1,15 @@
 /* global lib */
 
+const changeHandlers = {};
+
+const addChangeHandler = (key, handler) => {
+  if (!changeHandlers[key]) {
+    changeHandlers[key] = [];
+  }
+
+  changeHandlers[key].push(handler);
+};
+
 const ensureBool = (input) => {
   if (input === true || input === false) return input;
 
@@ -26,7 +36,20 @@ const getUserSetting = (name, defaultValue, type) => {
   return val === null || val === undefined ? defaultValue : val;
 };
 
-const setUserSetting = (name, val) => window.localStorage.setItem(name, val);
+const setUserSetting = (name, val) => {
+  const curr = getUserSetting(name);
+
+  // Always true for non-primitives
+  if (curr !== val) {
+    const handlers = changeHandlers[name];
+
+    if (lib.isArray(handlers)) {
+      handlers.forEach((handler) => handler(val, name));
+    }
+  }
+
+  window.localStorage.setItem(name, val);
+};
 
 const arrayAppend = (name, val) =>
   setUserSetting(
@@ -93,6 +116,7 @@ const returnFalseOnError = (fn) => (input) => {
 
 // eslint-disable-next-line no-unused-vars
 const settings = {
+  addChangeHandler,
   arrayAppend,
   arrayRemoveAll,
   fpSet: (name) => (val) => setUserSetting(name, val),

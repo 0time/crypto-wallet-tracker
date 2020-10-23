@@ -17,19 +17,30 @@ module.exports = (context) => {
   };
 
   return (options) =>
-    flow([debug, axios])(options).catch((err) => {
-      const data = get(err, 'response.data');
+    flow([debug, axios])(options)
+      .then((resp) => {
+        const headers = get(resp, 'headers');
 
-      if (data) {
-        err.message += `\n${JSON.stringify(data)}`;
-      }
+        logger.trace(headers);
 
-      require('fs').writeFileSync(
-        '/tmp/last.err',
-        require('util').inspect(err, { depth: 6 }),
-        'utf8',
-      );
+        return resp;
+      })
+      .catch((err) => {
+        const data = get(err, 'response.data');
+        const headers = get(err, 'response.headers');
 
-      return Promise.reject(err);
-    });
+        logger.trace(headers);
+
+        if (data) {
+          err.message += `\n${JSON.stringify(data)}`;
+        }
+
+        require('fs').writeFileSync(
+          '/tmp/last.err',
+          require('util').inspect(err, { depth: 6 }),
+          'utf8',
+        );
+
+        return Promise.reject(err);
+      });
 };

@@ -7,7 +7,7 @@ const getOptions = require('./get-options');
 const identity = require('../../fp/identity');
 const {
   HTTP_STATUS: { OK },
-  JSON_SELECTORS: { REQUEST_CONTEXT },
+  JSON_SELECTORS: { REQUEST_CONTEXT, REQUEST_QUERY_FORCE },
 } = require('../../constants');
 const makeRequest = require('./make-request');
 const processResponse = require('./process-response');
@@ -25,24 +25,31 @@ module.exports = (context) => {
     configuredProcessResponse,
   ]);
 
-  return (req, res, next) =>
-    fp
+  return (req, res, next) => {
+    const force = get(req, REQUEST_QUERY_FORCE, null);
+    const querySymbol = get(req, 'query.symbol')
+      ? get(req, 'query.symbol').split(',')
+      : [];
+
+    const requestContext = { req, res, next, querySymbol, symbol: querySymbol };
+
+    if (force === 'true') {
+      requestContext.force = true;
+    } else if (force === 'false') {
+      requestContext.force = false;
+    }
+
+    return fp
       .flow([
         (startingContext) => set(req, REQUEST_CONTEXT, startingContext),
-        // TODO: Get from user storage if user is logged in (instead? in addition?)
-        fp.get(REQUEST_CONTEXT),
-        fp.set('querySymbol', get(req, 'query.symbol', '').split(',')),
-        (requestContext) =>
-          set(requestContext, 'symbol', get(requestContext, 'querySymbol')),
-        (requestContext) =>
-          getMostStaleIncludingSet(context)(get(requestContext, 'symbol')),
-        (symbols) => set(req, `${REQUEST_CONTEXT}.symbol`, symbols),
-        () => get(req, REQUEST_CONTEXT),
-        fpIf(canMakeRequest(), updateSymbols, identity),
+        () => getMostStaleIncludingSet(context)(get(requestContext, 'symbol')),
+        (symbols) => set(requestContext, 'symbol', symbols),
+        fpIf(canMakeRequest(requestContext), updateSymbols, identity),
         () => configuredFromDbReadSymbolData(get(req, REQUEST_CONTEXT)),
         fp.get('rows'),
         (json) => ({ json, status: OK }),
         next,
-      ])({ req, res, next })
+      ])(requestContext)
       .catch(next);
+  };
 };
