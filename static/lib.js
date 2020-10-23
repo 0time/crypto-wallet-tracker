@@ -24,12 +24,8 @@ const lib = (function () {
 
     const deletions = [];
 
-    every('fades', 60000, () => console.log(JSON.stringify(fades)));
-
     fades.forEach((fade, fadeIndex) => {
       const { id, resolve, reject } = fade;
-
-      everyLog(id, 10000, fade);
 
       if (!fade.ele.attr) {
         if (isString(fade.ele)) {
@@ -92,12 +88,6 @@ const lib = (function () {
 
       const [r, g, b, a] = fade.fade;
       const newRgba = `rgba(${r}, ${g}, ${b}, ${a})`;
-
-      everyLog(
-        'new-rgba',
-        5000,
-        `${a} - ${fadeStep} = ${a - fadeStep} -- ${fade.fade} ${newRgba}`,
-      );
 
       ele.css('background-color', newRgba);
     });
@@ -418,7 +408,9 @@ const lib = (function () {
                 return acc;
               }, result);
             } else {
-              console.error(86, val);
+              console.error(val);
+
+              throw new Error(`cannot process wallet like the above ^`);
             }
 
             return result;
