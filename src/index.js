@@ -74,13 +74,16 @@ const refreshMostPopular = crRefreshMostPopular(context);
 
 const logger = get(context, RUNTIME_LOGGER);
 
-crons.on('create', (key, cronStr) => logger.debug(key, cronStr));
+/*
 crons.on('debug', (...args) => logger.debug(...args));
-crons.on('execute', (key, cronStr, cronTime) =>
-  logger.info({ action: 'execute', cronStr, cronTime, key }),
-);
 crons.on('skip', (key, cronStr, cronTime) =>
   logger.trace({ action: 'skip', cronStr, cronTime, key }),
+);
+*/
+
+crons.on('create', (key, cronStr) => logger.debug(key, cronStr));
+crons.on('execute', (key, cronStr, cronTime) =>
+  logger.info({ action: 'execute', cronStr, cronTime, key }),
 );
 
 crons.create(context)('update-every-30-minutes', '*/30 * * * *', () =>
