@@ -1,6 +1,7 @@
 const axios = require('./lib/axios');
 const bluebird = require('bluebird');
 const config = require('config');
+const crons = require('./lib/crons');
 const dbCreator = require('./lib/db');
 const express = require('./lib/express');
 const fpLogger = require('./lib/fp-logger');
@@ -22,12 +23,13 @@ const {
     RUNTIME_WORKING_DIR,
   },
 } = require('./lib/constants');
-const logger = require('./lib/logger');
+const crLogger = require('./lib/logger');
 const models = require('./lib/db/models');
 const os = require('os');
 const path = require('path');
 const process = require('./lib/process');
 const query = require('./lib/db/query');
+const crRefreshMostPopular = require('./lib/refresh-most-popular');
 
 bluebird.config({
   longStackTraces: true,
@@ -44,7 +46,7 @@ const context = {
 
 set(context, RUNTIME_LOG_FUNCTIONS, get(context, CONFIG_LOG_FUNCTIONS));
 set(context, RUNTIME_WORKING_DIR, process.cwd());
-set(context, RUNTIME_LOGGER, logger(context));
+set(context, RUNTIME_LOGGER, crLogger(context));
 
 ['unhandledRejection', 'uncaughtException'].forEach((ea) =>
   process.on(ea, (err) => {
@@ -67,6 +69,23 @@ set(context, RUNTIME_POOL, dbCreator(context));
 set(context, RUNTIME_QUERY, query(context));
 set(context, RUNTIME_AXIOS, axios(context));
 set(context, RUNTIME_DB_MODELS, models(context));
+
+const refreshMostPopular = crRefreshMostPopular(context);
+
+const logger = get(context, RUNTIME_LOGGER);
+
+crons.on('create', (key, cronStr) => logger.debug(key, cronStr));
+crons.on('debug', (...args) => logger.debug(...args));
+crons.on('execute', (key, cronStr, cronTime) =>
+  logger.info({ action: 'execute', cronStr, cronTime, key }),
+);
+crons.on('skip', (key, cronStr, cronTime) =>
+  logger.trace({ action: 'skip', cronStr, cronTime, key }),
+);
+
+crons.create(context)('update-every-30-minutes', '*/30 * * * *', () =>
+  refreshMostPopular(),
+);
 
 const logAndQuit = (x) => {
   get(context, RUNTIME_LOGGER).error(x);

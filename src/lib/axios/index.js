@@ -19,7 +19,7 @@ module.exports = (context) => {
   return (options) =>
     flow([debug, axios])(options)
       .then((resp) => {
-        const headers = get(resp, 'headers');
+        const headers = get(resp, ['headers', 'status', 'statusCode']);
 
         logger.trace(headers);
 

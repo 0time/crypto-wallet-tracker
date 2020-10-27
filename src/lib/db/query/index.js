@@ -5,6 +5,7 @@
 const {
   fp: { flow },
   get,
+  isString,
   pick,
 } = require('@0ti.me/tiny-pfp');
 const {
@@ -68,14 +69,23 @@ module.exports = (context) => {
   const regexForNumbers = /[0-9]+/g;
 
   const validate = (inp) => {
+    if (!inp) {
+      throw new Error('inp is falsy');
+    } else if (!isString(inp.sql)) {
+      throw new Error(`inp does not define a sql value ${JSON.stringify(inp)}`);
+    }
+
     const lastDollar = inp.sql.lastIndexOf('$');
     const lastDollarMatchResult = inp.sql
       .substr(lastDollar)
       .match(regexForNumbers);
-    const highestDollarValue = parseInt(lastDollarMatchResult[0]);
+    const highestDollarValue = lastDollarMatchResult
+      ? parseInt(lastDollarMatchResult[0])
+      : 0;
     const countIs = (inp.sql.match(regexForPcentIs) || { length: 0 }).length;
     const expectedIs = inp.formatterValues ? inp.formatterValues.length : 0;
-    const expectedDollarValue = inp.values.length;
+    logger.trace(86, JSON.stringify(inp));
+    const expectedDollarValue = inp.values ? inp.values.length : 0;
 
     const debug = (extra) =>
       logger.debug(

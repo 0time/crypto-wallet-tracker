@@ -3,4 +3,4 @@ const {
   JSON_SELECTORS: { RUNTIME_AXIOS },
 } = require('../../constants');
 
-module.exports = (context) => get(context, RUNTIME_AXIOS);
+module.exports = (context) => (options) => get(context, RUNTIME_AXIOS)(options);

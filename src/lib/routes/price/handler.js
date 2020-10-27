@@ -1,29 +1,20 @@
 const canMakeRequestCreator = require('./can-make-request');
+const crUpdateSymbols = require('../../requests/coin-market-cap');
 const { fp, get, set } = require('@0ti.me/tiny-pfp');
 const fpIf = require('../../fp/if');
 const fromDbReadSymbolData = require('./from-db-read-symbol-data');
 const getMostStaleIncludingSet = require('../../get-most-stale-including-set');
-const getOptions = require('./get-options');
 const identity = require('../../fp/identity');
 const {
   HTTP_STATUS: { OK },
   JSON_SELECTORS: { REQUEST_CONTEXT, REQUEST_QUERY_FORCE },
 } = require('../../constants');
-const makeRequest = require('./make-request');
-const processResponse = require('./process-response');
 
 module.exports = (context) => {
   const canMakeRequest = canMakeRequestCreator(context);
   const configuredFromDbReadSymbolData = fromDbReadSymbolData(context);
-  const configuredGetOptions = getOptions(context);
-  const configuredMakeRequest = makeRequest(context);
-  const configuredProcessResponse = processResponse(context);
 
-  const updateSymbols = fp.flow([
-    configuredGetOptions,
-    configuredMakeRequest,
-    configuredProcessResponse,
-  ]);
+  const updateSymbols = crUpdateSymbols(context);
 
   return (req, res, next) => {
     const force = get(req, REQUEST_QUERY_FORCE, null);

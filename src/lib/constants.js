@@ -19,6 +19,7 @@ module.exports = {
     CONFIG_SOURCE_URL: 'config.source.url',
     CONFIG_DB: 'config.db',
     CONFIG_SERVER_PORT: 'config.server.port',
+    CONTEXT_CRON_INTERVAL: 'config.interval',
     REQUEST_BODY: 'body',
     REQUEST_BODY_LANGUAGE: 'body.language',
     REQUEST_CONTEXT: 'cryptoRequestContext',
