@@ -25,7 +25,7 @@ const lib = (function () {
     const deletions = [];
 
     fades.forEach((fade, fadeIndex) => {
-      const { id, resolve, reject } = fade;
+      const { resolve, reject } = fade;
 
       if (!fade.ele.attr) {
         if (isString(fade.ele)) {
