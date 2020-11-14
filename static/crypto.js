@@ -152,21 +152,23 @@ const crypto = (function () {
 
   const accumulateTotals = (acc, ea) =>
     Object.assign({
-      'totals-usd': lib.get(acc, 'totals-usd', 0) + lib.get(ea, 'held-usd', 0),
+      'totals-usd':
+        lib.getNum(acc, 'totals-usd', 0) + lib.getNum(ea, 'held-usd', 0),
       'totals-basis-usd':
-        lib.get(acc, 'totals-basis-usd', 0) + lib.get(ea, 'basis', 0),
+        lib.getNum(acc, 'totals-basis-usd', 0) + lib.getNum(ea, 'basis', 0),
       'totals-daily-profit':
-        lib.get(acc, 'totals-daily-profit', 0) + lib.get(ea, 'change-usd', 0),
+        lib.getNum(acc, 'totals-daily-profit', 0) +
+        lib.getNum(ea, 'change-usd', 0),
       'totals-daily-profit-basis':
-        lib.get(acc, 'totals-daily-profit-basis', 0) +
-        lib.get(ea, 'price-24-hours-ago', 0) * lib.get(ea, 'held', 0),
+        lib.getNum(acc, 'totals-daily-profit-basis', 0) +
+        lib.getNum(ea, 'price-24-hours-ago', 0) * lib.getNum(ea, 'held', 0),
       'totals-oldest-timestamp': lib.min('\uffff')(
-        lib.get(acc, 'totals-oldest-timestamp', '\uffff'),
-        lib.get(ea, 'timestamp', '\uffff'),
+        lib.getNum(acc, 'totals-oldest-timestamp', '\uffff'),
+        lib.getNum(ea, 'timestamp', '\uffff'),
       ),
       'totals-ath-equivalent':
-        lib.get(acc, 'totals-ath-equivalent', 0) +
-        lib.get(ea, 'ath-adjusted-usd', 0),
+        lib.getNum(acc, 'totals-ath-equivalent', 0) +
+        lib.getNum(ea, 'ath-adjusted-usd', 0),
     });
 
   const createCryptoTables = (data) => {

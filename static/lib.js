@@ -257,6 +257,8 @@ const lib = (function () {
     usd,
   };
 
+  const ensureNumber = (x) => (isNumber(x) ? x : parseFloat(x));
+
   const get = (obj, key, defaultValue = undefined) => {
     if (obj && obj[key] !== undefined) {
       return obj[key];
@@ -264,6 +266,9 @@ const lib = (function () {
 
     return defaultValue;
   };
+
+  const getNum = (obj, key, defaultValue = undefined) =>
+    ensureNumber(get(obj, key, defaultValue));
 
   const getQueryParameters = (options) => {
     const userSettings = {};
@@ -452,6 +457,7 @@ const lib = (function () {
     filterWithinIndices,
     filterWithoutIndices,
     get,
+    getNum,
     getQueryParameters,
     has,
     identity,

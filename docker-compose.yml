@@ -24,6 +24,7 @@ services:
     image: postgres
     networks:
       - local
+    restart: unless-stopped
     volumes:
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 networks:
