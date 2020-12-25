@@ -11,6 +11,7 @@ const {
 } = require('../constants');
 
 module.exports = (context) => {
+  const blacklist = Object.keys(get(context, 'config.coinBlacklist', {}));
   const query = get(context, RUNTIME_QUERY);
   const cmcRequest = crCmcRequest(context);
 
@@ -31,7 +32,11 @@ module.exports = (context) => {
       () => query(getMostPopularSql),
       (result) => result.rows.map(({ symbol }) => symbol),
       (symbol) => ({
-        symbol: forcedRefresh.concat(symbol).filter(duplicates).slice(0, 100),
+        symbol: forcedRefresh
+          .concat(symbol)
+          .filter(duplicates)
+          .filter((ea) => !blacklist.includes(ea))
+          .slice(0, 100),
       }),
       cmcRequest,
       () => set(context, RUNTIME_LAST_API_CALL, new Date().valueOf()),

@@ -1,4 +1,5 @@
 module.exports = {
+  coinBlacklist: { STRAT: 1 },
   db: {
     host: 'localhost',
     port: 5432,

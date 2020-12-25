@@ -11,6 +11,7 @@ const fpFilter = (cb) => (array) => array.filter(cb);
 
 module.exports = (context) => {
   const query = get(context, RUNTIME_QUERY);
+  const blacklist = Object.keys(get(context, 'config.coinBlacklist', {}));
 
   return (symbols) => {
     const limit = get(context, CONFIG_SOURCE_LIMIT);
@@ -26,6 +27,7 @@ module.exports = (context) => {
         fp.map(({ symbol }) => symbol),
         fpConcat(symbols),
         fpFilter(duplicates),
+        fpFilter((ea) => !blacklist.includes(ea)),
         fpFilter((_, i) => i < limit),
       ]),
     );
