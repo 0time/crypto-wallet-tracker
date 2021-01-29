@@ -126,9 +126,10 @@ module.exports = (context) => {
 
       return query(sql, values, formatterValues);
     },
-    putMany: (list, options) => {
-      if (!list || !list.length)
+    putMany: (list, options = {}) => {
+      if (!list || !list.length) {
         return Promise.reject(new Error('Tried to put 0 records'));
+      }
 
       const uniqueFields = has(options, 'uniqueFields')
         ? get(options, 'uniqueFields')
@@ -136,7 +137,8 @@ module.exports = (context) => {
             (acc, ea) => acc.concat(Object.keys(ea)).filter(duplicates),
             [],
           );
-      const fields = uniqueFields.filter(validFields.includes);
+
+      const fields = uniqueFields.filter((ea) => validFields.includes(ea));
 
       const formatterValues = [];
       const sql = [];
@@ -144,8 +146,8 @@ module.exports = (context) => {
 
       sql.push('INSERT INTO "coins" (');
 
-      fields.forEach((field) => {
-        sql.push('%I');
+      fields.forEach((field, i) => {
+        sql.push(i > 0 ? ',%I' : '%I');
         formatterValues.push(field);
       });
 
@@ -155,11 +157,14 @@ module.exports = (context) => {
 
       list.forEach((row, i) => {
         sql.push(`${i > 0 ? ',' : ''}(`);
-        fields.forEach((field) => {
+
+        fields.forEach((field, j) => {
           ++counter;
-          sql.push(`$${counter}`);
+          sql.push(`${j > 0 ? ',' : ''}$${counter}`);
           values.push(mapValue(field, row));
         });
+
+        sql.push(')');
       });
 
       if (options.ignore) {
