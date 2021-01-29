@@ -2,6 +2,7 @@ const axios = require('axios');
 const {
   fp: { flow },
   get,
+  pick,
 } = require('@0ti.me/tiny-pfp');
 const {
   JSON_SELECTORS: { RUNTIME_LOGGER },
@@ -19,7 +20,7 @@ module.exports = (context) => {
   return (options) =>
     flow([debug, axios])(options)
       .then((resp) => {
-        const headers = get(resp, ['headers', 'status', 'statusCode']);
+        const headers = pick(resp, ['headers', 'status', 'statusCode']);
 
         logger.trace(headers);
 
